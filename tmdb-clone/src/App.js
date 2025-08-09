@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Home from './pages/Home';
+import Details from './pages/Details';
 import Movies from './pages/Movies';
 import TVShows from './pages/TVShows';
 import People from './pages/People';
@@ -16,6 +17,7 @@ function App() {
         <main className="min-h-screen">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/details/:mediaType/:id" element={<Details />} />
             <Route path="/movies" element={<Movies />} />
             <Route path="/tv" element={<TVShows />} />
             <Route path="/people" element={<People />} />

@@ -115,3 +115,45 @@ export function getPosterUrl(path, size = 'w500') {
   const cleanPath = path.startsWith('/') ? path.slice(1) : path;
   return `${IMG_BASE}/${size}/${cleanPath}`;
 }
+
+/**
+ * Builds a backdrop image URL
+ */
+export function getBackdropUrl(path, size = 'w780') {
+  if (!path) return '';
+  const cleanPath = path.startsWith('/') ? path.slice(1) : path;
+  return `${IMG_BASE}/${size}/${cleanPath}`;
+}
+
+/** Fetch item details (movie or tv) */
+export async function fetchDetails(mediaType, id, { append_to_response } = {}) {
+  try {
+    const params = {};
+    if (append_to_response) params.append_to_response = append_to_response;
+    return await makeRequest(`/${mediaType}/${id}`, params);
+  } catch (error) {
+    console.error('Failed to fetch details:', { mediaType, id, error });
+    throw error;
+  }
+}
+
+/** Fetch credits (cast and crew) */
+export async function fetchCredits(mediaType, id) {
+  try {
+    return await makeRequest(`/${mediaType}/${id}/credits`);
+  } catch (error) {
+    console.error('Failed to fetch credits:', { mediaType, id, error });
+    return { cast: [], crew: [] };
+  }
+}
+
+/** Fetch videos (trailers, teasers) */
+export async function fetchVideos(mediaType, id) {
+  try {
+    const data = await makeRequest(`/${mediaType}/${id}/videos`);
+    return data?.results || [];
+  } catch (error) {
+    console.error('Failed to fetch videos:', { mediaType, id, error });
+    return [];
+  }
+}

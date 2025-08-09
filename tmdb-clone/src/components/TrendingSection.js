@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaStar, FaChevronRight, FaChevronLeft, FaExclamationTriangle } from 'react-icons/fa';
 import { fetchTrending, getPosterUrl } from '../api/tmdb';
 
@@ -15,6 +16,7 @@ const mockMovies = [
 ];
 
 const TrendingSection = () => {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('day');
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -270,7 +272,7 @@ const TrendingSection = () => {
                       <div className="mt-auto pt-4 border-t border-gray-800/50 relative z-10">
                         <button 
                           className="w-full py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white rounded-xl text-[13px] font-semibold tracking-wide transition-all duration-300 flex items-center justify-center hover:shadow-lg hover:shadow-blue-500/30 active:scale-[0.98] group/button relative overflow-hidden"
-                          onClick={() => console.log('View details:', movie.id)}
+                          onClick={() => navigate(`/details/${movie.media_type || 'movie'}/${movie.id}`)}
                         >
                           <span className="relative z-10 flex items-center">
                             View Details
