@@ -1,5 +1,5 @@
 import React from 'react';
-import TVGrid from '../components/TVGrid';
+
 import { mockTVShows } from '../data/mockData';
 
 const TVShows = () => {
@@ -11,7 +11,7 @@ const TVShows = () => {
           <p className="text-gray-600">Discover the most popular TV shows right now.</p>
         </div>
         
-        <TVGrid tvShows={mockTVShows} />
+        <div className="text-center text-gray-500">TV grid coming soon.</div>
       </div>
     </div>
   );

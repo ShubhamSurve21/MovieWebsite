@@ -1,5 +1,5 @@
 import React from 'react';
-import MovieGrid from '../components/MovieGrid';
+
 import { mockMovies } from '../data/mockData';
 
 const Movies = () => {
@@ -10,8 +10,7 @@ const Movies = () => {
           <h1 className="text-3xl font-bold text-gray-900 mb-4">Popular Movies</h1>
           <p className="text-gray-600">Discover the most popular movies right now.</p>
         </div>
-        
-        <MovieGrid movies={mockMovies} />
+        <div className="text-center text-gray-500">Movie grid coming soon.</div>
       </div>
     </div>
   );

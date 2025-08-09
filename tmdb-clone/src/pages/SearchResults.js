@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
-import MovieGrid from '../components/MovieGrid';
-import TVGrid from '../components/TVGrid';
-import PeopleGrid from '../components/PeopleGrid';
+
+
+
 import { mockMovies, mockTVShows, mockPeople } from '../data/mockData';
 
 const SearchResults = () => {
@@ -32,7 +32,7 @@ const SearchResults = () => {
         {searchResults.movies.length > 0 && (
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Movies</h2>
-            <MovieGrid movies={searchResults.movies} />
+            <div className="text-center text-gray-500">Movie grid coming soon.</div>
           </section>
         )}
 
@@ -40,7 +40,7 @@ const SearchResults = () => {
         {searchResults.tvShows.length > 0 && (
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">TV Shows</h2>
-            <TVGrid tvShows={searchResults.tvShows} />
+            <div className="text-center text-gray-500">TV grid coming soon.</div>
           </section>
         )}
 
@@ -48,7 +48,7 @@ const SearchResults = () => {
         {searchResults.people.length > 0 && (
           <section className="mb-12">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">People</h2>
-            <PeopleGrid people={searchResults.people} />
+            <div className="text-center text-gray-500">People grid coming soon.</div>
           </section>
         )}
 

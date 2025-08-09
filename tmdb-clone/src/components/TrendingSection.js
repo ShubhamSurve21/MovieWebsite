@@ -1,100 +1,78 @@
-import React, { useState } from 'react';
-import MovieCard from './MovieCard';
+import React, { useEffect, useState } from 'react';
+import { fetchTrending, getPosterUrl } from '../api/tmdb';
 
-// Example mock trending data (replace with API integration if needed)
-const trendingToday = [
-  {
-    id: 1,
-    title: 'Jurassic World Rebirth',
-    poster_path: 'https://www.themoviedb.org/t/p/w220_and_h330_face/8rpDcsfLJypbO6vREc0547VKqEv.jpg',
-    vote_average: 6.4,
-    release_date: 'Jul 04, 2025',
-  },
-  {
-    id: 2,
-    title: 'Wednesday',
-    poster_path: 'https://www.themoviedb.org/t/p/w220_and_h330_face/jeGtaMwGxPmQN5xM4ClnwPQcNQz.jpg',
-    vote_average: 8.4,
-    release_date: 'Nov 23, 2022',
-  },
-  {
-    id: 3,
-    title: 'The Pickup',
-    poster_path: 'https://www.themoviedb.org/t/p/w220_and_h330_face/9ZlGs31gZpT3u1r8q5bJcK7QYqC.jpg',
-    vote_average: 5.4,
-    release_date: 'Jul 27, 2025',
-  },
-  {
-    id: 4,
-    title: 'Ne Zha 2',
-    poster_path: 'https://www.themoviedb.org/t/p/w220_and_h330_face/7IJ7F8tX7IAkpUdaGovOBJqORnJ.jpg',
-    vote_average: 8.0,
-    release_date: 'Jan 29, 2025',
-  },
-  {
-    id: 5,
-    title: 'Sorry, Baby',
-    poster_path: 'https://www.themoviedb.org/t/p/w220_and_h330_face/3C2rQWIO4D3r5A6h3hP6yF2sQ8B.jpg',
-    vote_average: 6.4,
-    release_date: 'Jun 27, 2025',
-  },
-  {
-    id: 6,
-    title: 'Weapons',
-    poster_path: 'https://www.themoviedb.org/t/p/w220_and_h330_face/4woSOUD0equAYzvwhWBHIJDCM88.jpg',
-    vote_average: 8.1,
-    release_date: 'Aug 06, 2025',
-  },
-  {
-    id: 7,
-    title: 'Platonic',
-    poster_path: 'https://www.themoviedb.org/t/p/w220_and_h330_face/6gIJuFHh5Lj4dNaPG3TzIMl7L68.jpg',
-    vote_average: 6.9,
-    release_date: 'May 23, 2023',
-  },
-  {
-    id: 8,
-    title: '28 Years',
-    poster_path: 'https://www.themoviedb.org/t/p/w220_and_h330_face/8V97rD2m6uA5u1n0lqkY2pA2n5b.jpg',
-    vote_average: 6.9,
-    release_date: 'Jun 20, 2025',
-  },
+// Optional: mock fallback if API fails
+const mockMovies = [
+  { id: 1, title: 'Fallback Movie', poster_path: '/abc123.jpg', vote_average: 7.5, release_date: '2025-07-01' },
 ];
 
-const trendingWeek = trendingToday; // For demo, reuse same data
-
 const TrendingSection = () => {
-  const [activeTab, setActiveTab] = useState('today');
-  const trendingData = activeTab === 'today' ? trendingToday : trendingWeek;
+  const [activeTab, setActiveTab] = useState('day');
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    fetchTrending('movie', activeTab).then((data) => {
+      if (data.results?.length) {
+        setMovies(data.results);
+      } else {
+        setMovies(mockMovies); // fallback
+      }
+    });
+  }, [activeTab]);
+
+  // No arrow controls; users can scroll horizontally
 
   return (
-    <section className="bg-white w-full py-10">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center mb-6">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-tmdb-dark mr-6">Trending</h2>
-          <div className="flex gap-2">
-            <button
-              className={`px-5 py-2 rounded-full font-semibold border-2 transition-all duration-150 ${activeTab === 'today' ? 'bg-tmdb-blue text-white border-tmdb-blue' : 'bg-white text-tmdb-blue border-tmdb-blue hover:bg-tmdb-blue/10'}`}
-              onClick={() => setActiveTab('today')}
+    <section className="w-full py-10 bg-gray-50">
+      <div className="w-full px-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-bold text-gray-900">Trending</h2>
+          <div className="flex gap-3">
+            <button 
+              className={`px-5 py-2 border-2 rounded-full text-sm font-medium transition-colors ${
+                activeTab === 'day' 
+                  ? 'bg-black text-white border-black' 
+                  : 'border-gray-300 hover:bg-gray-100'
+              }`} 
+              onClick={() => setActiveTab('day')}
             >
               Today
             </button>
-            <button
-              className={`px-5 py-2 rounded-full font-semibold border-2 transition-all duration-150 ${activeTab === 'week' ? 'bg-tmdb-blue text-white border-tmdb-blue' : 'bg-white text-tmdb-blue border-tmdb-blue hover:bg-tmdb-blue/10'}`}
+            <button 
+              className={`px-5 py-2 border-2 rounded-full text-sm font-medium transition-colors ${
+                activeTab === 'week' 
+                  ? 'bg-black text-white border-black' 
+                  : 'border-gray-300 hover:bg-gray-100'
+              }`} 
               onClick={() => setActiveTab('week')}
             >
               This Week
             </button>
           </div>
         </div>
-        <div className="overflow-x-auto">
-          <div className="flex gap-6 pb-2">
-            {trendingData.map((movie) => (
-              <div key={movie.id} className="min-w-[180px] max-w-[220px]">
-                <MovieCard movie={movie} />
+
+        <div id="movie-row" className="flex gap-6 overflow-x-auto pb-6 -mx-2 px-2">
+          {movies.map((movie) => {
+            const title = movie.title || movie.name;
+            const date = movie.release_date || movie.first_air_date || '';
+            return (
+              <div key={movie.id} className="flex-shrink-0 w-[220px] group">
+                <div className="relative overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                  <img 
+                    src={getPosterUrl(movie.poster_path)} 
+                    alt={title} 
+                    className="w-full h-[320px] object-cover transform group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <div className="mt-4 px-1">
+                  <h3 className="text-lg font-bold text-gray-900 truncate" title={title}>{title}</h3>
+                  <p className="text-sm text-gray-600">
+                    {new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                  </p>
+                </div>
               </div>
-            ))}
-          </div>
+            );
+          })}
         </div>
       </div>
     </section>

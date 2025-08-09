@@ -1,5 +1,5 @@
 import React from 'react';
-import PeopleGrid from '../components/PeopleGrid';
+
 import { mockPeople } from '../data/mockData';
 
 const People = () => {
@@ -11,7 +11,7 @@ const People = () => {
           <p className="text-gray-600">Discover the most popular people in entertainment.</p>
         </div>
         
-        <PeopleGrid people={mockPeople} />
+        <div className="text-center text-gray-500">People grid coming soon.</div>
       </div>
     </div>
   );
